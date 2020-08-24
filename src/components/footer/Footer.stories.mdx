@@ -1,6 +1,8 @@
 import { Meta, Preview, Story } from '@storybook/addon-docs/blocks';
 import Footer from "./Footer.vue";
 
+<Meta title="Footer" component={Footer} />
+
 # Footer
 
 Footers help people find what they need after scrolling to the bottom of a web page.
@@ -21,17 +23,12 @@ No explicit properties are required to be passed in while consuming this compone
 
 <br />
 
-## Default
+## Basic
 
-Used at the bottom of the page.
+Basic Footer.
 
-<Meta title="Footer" component={Footer} />
+<Story name="Basic" id="footer--basic"></Story>
 
-<Preview>
-  <Story name="Default">
-    {{
-      components: { Footer },
-      template: "<Footer />",
-    }}
-  </Story>
-</Preview>
+```bash
+<Footer />
+```
