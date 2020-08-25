@@ -5,6 +5,7 @@
       type="radio"
       :name="name"
       :id="id"
+      @change="$emit('radio-select')"
     />
     <span class="bcgov-dot" />
   </label>
@@ -28,6 +29,6 @@
         type: String,
         required: true,
       },
-    }
+    },
   }
 </script>
