@@ -32,8 +32,11 @@ Basic Radio button.
 <Story name="Basic" id="radio--basic"></Story>
 
 ```bash
-const label = "Yes";
-const onSelect = () => {};
+<Radio id="radio" name="radio" label="Yes" v-on:radio-select="handleSelect" />
 
-<Radio id="radio" name="radio" label="Yes" @onSelect="onSelect" />
+methods: {
+  handleSelect() {
+    // handle radio button selection here
+  }
+}
 ```
