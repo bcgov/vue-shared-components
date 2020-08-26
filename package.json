@@ -15,14 +15,15 @@
     "bootstrap": "^4.5.2",
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
+    "mdi-vue": "^1.7.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.11.1",
     "@storybook/addon-actions": "^6.0.16",
-    "@storybook/addon-essentials": "^6.0.16",
     "@storybook/addon-docs": "^6.0.7",
+    "@storybook/addon-essentials": "^6.0.16",
     "@storybook/addon-links": "^6.0.16",
     "@storybook/vue": "^6.0.16",
     "@vue/cli-plugin-babel": "~4.5.0",
