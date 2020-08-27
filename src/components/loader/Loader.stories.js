@@ -27,6 +27,4 @@ PageLevel.args = {
 };
 
 export const Container = ContainerTemplate.bind({});
-Container.args = {
-  page: false,
-};
+Container.args = {};
