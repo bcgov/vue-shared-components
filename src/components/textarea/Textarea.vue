@@ -2,7 +2,7 @@
   <div>
     <div v-if="label" class="bcgov-input-label">
       <label v-bind:for="id">{{ label }}</label>
-      {{ asterisk }}&nbsp;
+      <span v-if="isRequired" id="asterisk" class="bcgov-mandatory">*</span>&nbsp;
     </div>
     <textarea
       v-bind:id="id"
@@ -34,13 +34,6 @@
         required: false,
         default: "",
       },
-    },
-    data() {
-      return {
-        asterisk: this.isRequired
-          ? <span id="asterisk" className="mandatory">*</span>
-          : ""
-      }
     }
   }
 </script>

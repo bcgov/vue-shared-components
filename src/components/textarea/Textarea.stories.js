@@ -21,3 +21,10 @@ export const WithoutLabel = Template.bind({});
 WithoutLabel.args = {
   id: "1"
 };
+
+export const Mandatory = Template.bind({});
+Mandatory.args = {
+  id: "1",
+  label: "You must provide more information",
+  isRequired: true,
+};
