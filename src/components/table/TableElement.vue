@@ -12,8 +12,6 @@
 </template>
 
 <script>
-  import "./Table.css";
-
   export default {
     name: "TableElement",
     props: {

@@ -1,10 +1,11 @@
 <template>
   <div class="bcgov-table" v-bind:class="styling">
-    <b>{{ heading }}</b>
-    <div class="bcgov-table-body" v-bind:key="element" v-for="element in elements">
+    <b v-if="heading">{{ heading }}</b>
+    <div class="bcgov-table-body">
       <table-element
+        v-bind:key="element"
+        v-for="element in elements"
         v-bind:isFeesData="isFeesData"
-        v-bind:key="element.key || element.name"
         v-bind:element="element"
         v-bind:elementStyles="elementStyles"
       />
