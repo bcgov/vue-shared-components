@@ -35,9 +35,3 @@ export const WithoutIcon = Template.bind({});
 WithoutIcon.args = {
   element: DisplayBoxTestData,
 };
-
-export const WithSideBySideContent = Template.bind({});
-WithSideBySideContent.args = {
-  styling: "bcgov-display-left-element",
-  element: 
-};
