@@ -9,31 +9,26 @@ export default {
 
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
-  components: { DisplayBox },
-  template: '<DisplayBox v-bind="$props" />',
+  components: { DisplayBox, DisplayBoxTestData },
+  template: '<DisplayBox v-bind="$props"><template v-slot:element><DisplayBoxTestData /></template></DisplayBox>',
 });
 
 export const WithoutIcon = Template.bind({});
-WithoutIcon.args = {
-  element: DisplayBoxTestData,
-};
 
-export const WithIcon = Template.bind({});
-WithIcon.args = {
-  icon: Account,
-  element: DisplayBoxTestData,
-};
+const WithIconTemplate = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { DisplayBox, Account, DisplayBoxTestData },
+  template: '<DisplayBox v-bind="$props"><template v-slot:element><DisplayBoxTestData /></template><template v-slot:icon><Account /></template></DisplayBox>',
+});
 
-export const WithBlueBackground = Template.bind({});
+export const WithIcon = WithIconTemplate.bind({});
+
+export const WithBlueBackground = WithIconTemplate.bind({});
 WithBlueBackground.args = {
-  icon: Account,
-  element: DisplayBoxTestData,
   styling: "bcgov-blue-background",
 };
 
-export const WithBorder = Template.bind({});
+export const WithBorder = WithIconTemplate.bind({});
 WithBorder.args = {
-  icon: Account,
-  element: DisplayBoxTestData,
   styling: "bcgov-border-background",
 };
