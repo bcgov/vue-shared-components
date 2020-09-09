@@ -1,10 +1,10 @@
 <template>
   <div class="bcgov-display-box" v-bind:class="styling">
-    <div v-if="icon" class="bcgov-display-icon">
-      <component v-bind:is="icon" />
-    </div>
+    <Fragment v-if="this.$slots.icon" class="bcgov-display-icon">
+      <slot name="icon"></slot>
+    </Fragment>
     <div class="bcgov-display-right-element">
-      <component v-bind:is="element"></component>
+      <slot name="element"></slot>
     </div>
   </div>
 </template>
@@ -19,15 +19,6 @@
         type: String,
         required: false,
         default: "",
-      },
-      icon: {
-        type: Object,
-        required: false,
-        default: null,
-      },
-      element: {
-        type: Object,
-        required: true,
       },
     }
   }
