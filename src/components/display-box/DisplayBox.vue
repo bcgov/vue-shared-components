@@ -1,6 +1,8 @@
 <template>
   <div class="bcgov-display-box" v-bind:class="styling">
-    <div v-if="icon" class="bcgov-display-icon">{{ icon }}</div>
+    <div v-if="icon" class="bcgov-display-icon">
+      <component v-bind:is="icon" />
+    </div>
     <div class="bcgov-display-right-element">
       <component v-bind:is="element"></component>
     </div>
