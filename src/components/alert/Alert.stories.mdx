@@ -56,7 +56,7 @@ Used for warning messages, typically for explicitly informing a user of somethin
 ```bash
 import Error from "./Error.vue";
 
-<Alert v-bind:icon="Error" v-bind:type="warning" v-bind:styling="bcgov-warning-background" v-bind:element="This is a warning message!" />
+<Alert v-bind:icon="Error" v-bind:alertType="warning" v-bind:styling="bcgov-warning-background" v-bind:element="This is a warning message!" />
 ```
 
 ## Error Alert
@@ -68,7 +68,7 @@ Used for error messages, when something has gone wrong unexpectedly and the user
 ```bash
 import CloseCircle from "./CloseCircle.vue";
 
-<Alert v-bind:icon="CloseCircle" v-bind:type="error" v-bind:styling="bcgov-error-background" v-bind:element="This is an error message!" />
+<Alert v-bind:icon="CloseCircle" v-bind:alertType="error" v-bind:styling="bcgov-error-background" v-bind:element="This is an error message!" />
 ```
 
 ## Info Alert
@@ -80,5 +80,5 @@ Used for informative messages.
 ```bash
 import Information from "./Information.vue";
 
-<Alert v-bind:icon="Information" v-bind:type="info" v-bind:styling="bcgov-info-background" v-bind:element="This is an info message!" />
+<Alert v-bind:icon="Information" v-bind:alertType="info" v-bind:styling="bcgov-info-background" v-bind:element="This is an info message!" />
 ```
