@@ -38,3 +38,45 @@ const table = <Table v-bind:elements="elements" />;
 
 <DisplayBox v-bind:element="table" />;
 ```
+
+## Display Box (With Icon)
+
+Used for content with an icon.
+
+<Story name="With Icon" id="displaybox--with-icon"></Story>
+
+```bash
+import Icon from "Icon.vue";
+
+<DisplayBox :icon="Icon" v-bind:element="table" />;
+```
+
+## Display Box (With Blue Background)
+
+Used for content with a gov-themed blue background.
+
+<Story
+  name="With Blue Background"
+  id="displaybox--with-blue-background"
+></Story>
+
+```bash
+import Icon from "Icon.vue";
+
+<DisplayBox :icon="Icon" v-bind:element="table" styling="bcgov-blue-background" />;
+```
+
+## Display Box (With Border)
+
+Used for content with a border around it.
+
+<Story
+  name="With Border"
+  id="displaybox--with-border"
+></Story>
+
+```bash
+import Icon from "Icon.vue";
+
+<DisplayBox :icon="Icon" v-bind:element="table" styling="bcgov-border-background" />;
+```
