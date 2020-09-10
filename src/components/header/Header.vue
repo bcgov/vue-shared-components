@@ -2,8 +2,8 @@
   <header>
     <nav class="container-fluid navbar navbar-expand-lg navbar-dark">
       <heading-title classNames="navbar-brand pointer" />
-      <heading-image :history="history" classNames="img-fluid d-none d-md-block pointer" width="181" :src="bcidLogoRev" />
-      <heading-image :history="history" classNames="img-fluid d-md-none pointer" width="64" :src="bcidSymbol" />
+      <heading-image :history="history" classNames="img-fluid d-none d-md-block pointer" :width="181" :src="bcidLogoRev" />
+      <heading-image :history="history" classNames="img-fluid d-md-none pointer" :width="64" :src="bcidSymbol" />
       <heading-title classNames="pointer navbar-brand nav-item nav-link" />
       <div id="title" class="navbar-brand">
         {{ name }}
