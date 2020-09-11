@@ -8,7 +8,9 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build": "babel src -d build --copy-files",
-    "prepare": "yarn run build"
+    "prepare": "yarn run build",
+    "test": "jest",
+    "test-watch": "yarn run test -- --watch"
   },
   "dependencies": {
     "@bcgov/bootstrap-theme": "github:bcgov/bootstrap-theme",
@@ -27,15 +29,56 @@
     "@storybook/addon-essentials": "^6.0.16",
     "@storybook/addon-links": "^6.0.16",
     "@storybook/vue": "^6.0.21",
-    "@vue/cli-service": "~4.5.6",
-    "@vue/cli-plugin-eslint": "~4.5.6",
     "@vue/cli-plugin-babel": "~4.5.6",
+    "@vue/cli-plugin-eslint": "~4.5.6",
+    "@vue/cli-service": "~4.5.6",
+    "@vue/test-utils": "^1.1.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "jest": "^26.4.2",
+    "jest-serializer-vue": "^2.0.2",
     "react-is": "^16.13.1",
+    "vue-jest": "^3.0.6",
     "vue-template-compiler": "^2.6.11"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|PNG|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|pdf)$": "<rootDir>/src/AssetsTransformer.js",
+      "\\.(css|less)$": "<rootDir>/src/AssetsTransformer.js"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
+    },
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/jest-serializer-vue"
+    ]
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "presets": [
+          [
+            "env",
+            {
+              "targets": {
+                "node": "current"
+              }
+            }
+          ]
+        ]
+      }
+    }
   },
   "eslintConfig": {
     "root": true,
