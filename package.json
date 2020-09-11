@@ -64,22 +64,6 @@
       "<rootDir>/node_modules/jest-serializer-vue"
     ]
   },
-  "babel": {
-    "env": {
-      "test": {
-        "presets": [
-          [
-            "env",
-            {
-              "targets": {
-                "node": "current"
-              }
-            }
-          ]
-        ]
-      }
-    }
-  },
   "eslintConfig": {
     "root": true,
     "env": {
