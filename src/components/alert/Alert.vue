@@ -30,7 +30,7 @@
         required: true,
       },
       element: {
-        type: Object,
+        type: [Object, String],
         required: true,
       },
       icon: {

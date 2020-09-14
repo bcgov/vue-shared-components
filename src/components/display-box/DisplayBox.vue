@@ -1,8 +1,8 @@
 <template>
   <div class="bcgov-display-box" v-bind:class="styling">
-    <Fragment v-if="this.$slots.icon" class="bcgov-display-icon">
+    <div v-if="this.$slots.icon" class="bcgov-display-icon">
       <slot name="icon"></slot>
-    </Fragment>
+    </div>
     <div class="bcgov-display-right-element">
       <slot name="element"></slot>
     </div>
