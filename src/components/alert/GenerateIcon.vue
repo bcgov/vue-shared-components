@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <div v-if="iconType === 'success'" class="bcgov-success-color">
       <component v-bind:is="icon" />
     </div>
@@ -12,7 +12,7 @@
     <div v-if="iconType === 'error'" class="bcgov-error-color">
       <component v-bind:is="icon" />
     </div>
-  </fragment>
+  </div>
 </template>
 
 <script>
