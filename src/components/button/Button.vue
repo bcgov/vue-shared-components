@@ -3,7 +3,7 @@
     class="bcgov-button" v-bind:class="styling"
     @click="$emit('button-click')"
     type="button"
-    :disabled="disabled"
+    v-bind:disabled="disabled"
   >
     {{ label }}
     <div v-if="hasLoader" class="bcgov-loader-show">
