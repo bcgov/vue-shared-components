@@ -20,8 +20,7 @@
     "history": "^5.0.0",
     "jquery": "^3.5.1",
     "mdi-vue": "^1.7.1",
-    "vue": "^2.6.11",
-    "vue-fragment": "^1.5.1"
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
