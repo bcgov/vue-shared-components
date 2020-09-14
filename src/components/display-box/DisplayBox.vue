@@ -1,8 +1,8 @@
 <template>
   <div class="bcgov-display-box" v-bind:class="styling">
-    <Fragment v-if="this.$slots.icon" class="bcgov-display-icon">
+    <fragment v-if="this.$slots.icon" class="bcgov-display-icon">
       <slot name="icon"></slot>
-    </Fragment>
+    </fragment>
     <div class="bcgov-display-right-element">
       <slot name="element"></slot>
     </div>
@@ -10,10 +10,12 @@
 </template>
 
 <script>
+  import { Fragment } from "vue-fragment";
   import "./DisplayBox.css";
 
   export default {
     name: "DisplayBox",
+    components: { Fragment },
     props: {
       styling: {
         type: String,

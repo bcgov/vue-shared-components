@@ -1,5 +1,5 @@
 <template>
-  <Fragment>
+  <fragment>
     <div v-if="iconType === 'success'" class="bcgov-success-color">
       <component v-bind:is="icon" />
     </div>
@@ -12,14 +12,16 @@
     <div v-if="iconType === 'error'" class="bcgov-error-color">
       <component v-bind:is="icon" />
     </div>
-  </Fragment>
+  </fragment>
 </template>
 
 <script>
+  import { Fragment } from "vue-fragment";
   import "./Alert.css";
 
   export default {
     name: "GenerateIcon",
+    components: { Fragment },
     props: {
       icon: {
         type: Object,
