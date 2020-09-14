@@ -65,11 +65,6 @@ jobs:
         run: |
           ./cc-test-reporter format-coverage -t lcov -o coverage/vue-shared-codeclimate.json ${{github.workspace}}/coverage/lcov.info
       
-      # List all formatted files in coverage directory
-      - name: WHERE AM I - FORMATTED?
-        run: |
-          ls ${{ github.workspace }}/coverage
-      
       # Upload JSON for debugging purposes
       - name: Upload JSON for debugging purposes
         uses: actions/upload-artifact@v2
