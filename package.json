@@ -10,7 +10,8 @@
     "build": "babel src -d build --copy-files",
     "prepare": "yarn run build",
     "test": "jest",
-    "test-watch": "yarn run test -- --watch"
+    "test-watch": "yarn run test -- --watch",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@bcgov/bootstrap-theme": "github:bcgov/bootstrap-theme",
