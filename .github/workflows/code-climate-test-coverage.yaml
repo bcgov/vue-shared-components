@@ -9,7 +9,7 @@ on:
 jobs:
   yarn:
     env:
-      CC_TEST_REPORTER_ID: 7d2432e1de539b66bfce3471fe722f0442ad5422397bb8e8f3258535b0dee0ba
+      CC_TEST_REPORTER_ID: 65eeb3e25c8014eb19ed65ba696ba40aeb895a0193757c8ab7e069d28ec59d24
 
     name: Create, format and upload Javascript coverage artifact
     runs-on: ubuntu-latest
