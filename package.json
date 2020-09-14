@@ -58,6 +58,7 @@
     "collectCoverageFrom": [
       "src/**/*.vue",
       "!src/*.vue",
+      "!src/modules/**",
       "!src/*.js",
       "!**/node_modules/**",
       "!**/vendor/**"
