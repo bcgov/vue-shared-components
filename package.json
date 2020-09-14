@@ -97,7 +97,18 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/*.spec.js",
+          "**/*.test.js"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",

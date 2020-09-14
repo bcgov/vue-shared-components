@@ -28,7 +28,9 @@
       elements: {
         type: Array,
         required: false,
-        default: [],
+        default() {
+          return []
+        },
       },
       styling: {
         type: String,
@@ -43,7 +45,9 @@
       elementStyles: {
         type: Object,
         required: false,
-        default: {},
+        default() {
+          return {}
+        },
       }
     },
     components: {
