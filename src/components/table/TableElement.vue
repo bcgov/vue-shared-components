@@ -26,7 +26,9 @@
       elementStyles: {
         type: Object,
         required: false,
-        default: {},
+        default() {
+          return {}
+        },
       },
     },
     data() {
@@ -38,7 +40,7 @@
       if (this.elementStyles) {
         if (this.elementStyles.rowStyle) rowStyle += ` ${this.elementStyles.rowStyle}`;
         if (this.elementStyles.columnStyle)
-          columnStyle = elementStyles && this.elementStyles.columnStyle;
+          columnStyle = this.elementStyles && this.elementStyles.columnStyle;
       }
 
       return {

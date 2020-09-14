@@ -10,7 +10,8 @@
     "build": "babel src -d build --copy-files",
     "prepare": "yarn run build",
     "test": "jest",
-    "test-watch": "yarn run test -- --watch"
+    "test-watch": "yarn run test -- --watch",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@bcgov/bootstrap-theme": "github:bcgov/bootstrap-theme",
@@ -41,6 +42,7 @@
     "jest": "^26.4.2",
     "jest-serializer-vue": "^2.0.2",
     "react-is": "^16.13.1",
+    "jest-sonar-reporter": "^2.0.0",
     "vue-jest": "^3.0.6",
     "vue-template-compiler": "^2.6.11"
   },
@@ -52,6 +54,13 @@
       "\\.(jpg|jpeg|png|PNG|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|pdf)$": "<rootDir>/src/AssetsTransformer.js",
       "\\.(css|less)$": "<rootDir>/src/AssetsTransformer.js"
     },
+    "collectCoverageFrom": [
+      "src/**/*.vue",
+      "!src/*.vue",
+      "!src/*.js",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ],
     "moduleFileExtensions": [
       "js",
       "vue"
@@ -62,7 +71,20 @@
     },
     "snapshotSerializers": [
       "<rootDir>/node_modules/jest-serializer-vue"
-    ]
+    ],
+    "verbose": true,
+    "testResultsProcessor": "jest-sonar-reporter",
+    "collectCoverage": true,
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
+    "coverageDirectory": "coverage"
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "test-report.xml",
+    "indent": 4
   },
   "eslintConfig": {
     "root": true,
@@ -76,7 +98,18 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/*.spec.js",
+          "**/*.test.js"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",
