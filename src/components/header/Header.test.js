@@ -17,7 +17,7 @@ describe("Header component", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  test("Clicking HeadingImage takes you back to home", () => {
+  test("clicking HeadingImage takes you back to home", () => {
     const { container } = render(Header, {
       propsData: {
         name: "File Submission",
