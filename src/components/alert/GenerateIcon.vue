@@ -16,12 +16,10 @@
 </template>
 
 <script>
-  import { Fragment } from "vue-fragment";
   import "./Alert.css";
 
   export default {
     name: "GenerateIcon",
-    components: { Fragment },
     props: {
       icon: {
         type: Object,

@@ -10,12 +10,10 @@
 </template>
 
 <script>
-  import { Fragment } from "vue-fragment";
   import "./DisplayBox.css";
 
   export default {
     name: "DisplayBox",
-    components: { Fragment },
     props: {
       styling: {
         type: String,
