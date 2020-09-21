@@ -2,7 +2,7 @@
   <li class="nav-item m-1">
     <a
       class="nav-link"
-      href={url}
+      :href="url"
       target="_blank"
       rel="noopener noreferrer"
     >
