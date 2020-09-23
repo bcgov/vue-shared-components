@@ -11,7 +11,8 @@
     "prepare": "yarn run build",
     "test": "jest",
     "test-watch": "yarn run test -- --watch",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "update-snapshots": "jest --updateSnapshot"
   },
   "dependencies": {
     "@bcgov/bootstrap-theme": "github:bcgov/bootstrap-theme",

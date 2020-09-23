@@ -25,10 +25,7 @@
       },
       elementStyles: {
         type: Object,
-        required: false,
-        default() {
-          return {}
-        },
+        required: true,
       },
     },
     data() {

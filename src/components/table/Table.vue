@@ -3,8 +3,8 @@
     <b v-if="heading">{{ heading }}</b>
     <div class="bcgov-table-body">
       <table-element
-        v-bind:key="element"
         v-for="element in elements"
+        v-bind:key="element.name || element.key"
         v-bind:isFeesData="isFeesData"
         v-bind:element="element"
         v-bind:elementStyles="elementStyles"
