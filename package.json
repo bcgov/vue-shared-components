@@ -30,7 +30,7 @@
     "@storybook/addon-actions": "^6.0.21",
     "@storybook/addon-docs": "^6.0.7",
     "@storybook/addon-essentials": "^6.0.16",
-    "@storybook/addon-links": "^6.0.16",
+    "@storybook/addon-links": "^6.0.22",
     "@storybook/vue": "^6.0.21",
     "@storybook/storybook-deployer": "^2.8.6",
     "@testing-library/vue": "^5.0.4",
