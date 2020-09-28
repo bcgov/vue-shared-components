@@ -7,7 +7,7 @@
     alt="B.C. Government Logo"
     @click="handleClick"
     @keydown="handleClick"
-    role="presentation"
+    role="img"
   />
 </template>
 

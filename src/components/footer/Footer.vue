@@ -1,6 +1,7 @@
 <template>
   <footer class="footer">
-    <nav class="navbar navbar-expand-sm navbar-dark justify-content-end">
+    <nav class="navbar navbar-expand-sm navbar-dark justify-content-end"
+         aria-label="Footer">
       <button
         class="navbar-toggler"
         type="button"

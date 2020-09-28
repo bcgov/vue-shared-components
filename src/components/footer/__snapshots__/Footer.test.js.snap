@@ -2,7 +2,7 @@
 
 exports[`Footer component matches the snapshot 1`] = `
 <footer class="footer">
-  <nav class="navbar navbar-expand-sm navbar-dark justify-content-end"><button type="button" data-toggle="collapse" data-target="#footerBar" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
+  <nav aria-label="Footer" class="navbar navbar-expand-sm navbar-dark justify-content-end"><button type="button" data-toggle="collapse" data-target="#footerBar" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
     <div id="footerBar" class="collapse navbar-collapse flex-grow-0">
       <ul class="navbar-nav text-right">
         <li class="nav-item m-1"><a href="https://www2.gov.bc.ca" target="_blank" rel="noopener noreferrer" class="nav-link">

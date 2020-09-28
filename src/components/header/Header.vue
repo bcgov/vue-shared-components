@@ -1,6 +1,7 @@
 <template>
   <header>
-    <nav class="container-fluid navbar navbar-expand-lg navbar-dark">
+    <nav class="container-fluid navbar navbar-expand-lg navbar-dark"
+         aria-label="Header">
       <heading-title classNames="navbar-brand pointer" />
       <heading-image :history="history" classNames="img-fluid d-none d-md-block pointer" :width="181" :src="bcidLogoRev" />
       <heading-image :history="history" classNames="img-fluid d-md-none pointer" :width="64" :src="bcidSymbol" />
