@@ -24,7 +24,8 @@
     },
     methods: {
       handleClick() {
-        this.history.push("/");
+        const historyObj = this.history;
+        historyObj.push("/");
       }
     }
   }
