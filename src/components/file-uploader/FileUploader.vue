@@ -22,7 +22,7 @@
         <Thumbnail :imageObject="imageModel" @delete="deleteImage(imageModel)" />
       </div>
 
-        <div class="common-thumbnail ml-3" @click='openFileDialog()'>
+        <a href="javascrip: void 0;" class="common-thumbnail ml-3" @click='openFileDialog($event)'>
           <div class="thumbnail-container">
             <div class="image-thumbnail demo-thumbnail">
               <img :src="plusIconSvg" class="svg-icon" />
@@ -31,7 +31,7 @@
               Add
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
 
@@ -307,22 +307,6 @@ export default {
               console.log('completed loading image');
           }
       );
-
-      const imagePlaceholderEnterKeyStream = merge(
-        fromEvent(this.$refs.imagePlaceholderRef, 'keyup'),
-      ).pipe(filter((evt) => evt.key === 'Enter'));
-
-      merge(
-          fromEvent(this.$refs.imagePlaceholderRef, 'click'),
-          imagePlaceholderEnterKeyStream
-      ).pipe(
-          map((event) => {
-              event.preventDefault();
-              return event;
-          })
-      ).subscribe( (event) => {
-          this.$refs.browseFileRef.dispatchEvent(new MouseEvent('click'));
-      });
   },
 
   methods: {
@@ -346,7 +330,8 @@ export default {
     },
 
     /** Opens the file upload dialog from the browser. */
-    openFileDialog: function() {
+    openFileDialog: function(event) {
+        event.preventDefault();
         console.log('opening file dialog');
         this.$refs.browseFileRef.dispatchEvent(new MouseEvent('click'));
     },
