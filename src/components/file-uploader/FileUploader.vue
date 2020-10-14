@@ -43,9 +43,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import Thumbnail from './Thumbnail.vue';
-import { Observable ,  Observer, fromEvent, merge } from 'rxjs';
+import { Observable, fromEvent, merge } from 'rxjs';
 import {map, filter, flatMap, scan, delay, retryWhen} from 'rxjs/operators';
 import plusIconSvg from './images/plus.svg';
 import cloudUploadIconSvg from './images/cloud-upload-alt.svg';
@@ -77,7 +76,7 @@ class CommonImageProcessingError {
   maxSizeAllowed;
   errorCode;
   // added errorDescription.PDF.JS gives proper error messages as invalid pdf structure or password protected pdf.Good for splunk tracking
-  constructor(errorCode, errorDescription) {
+  constructor(errorCode) {
     this.errorCode = errorCode;
   }
 }
@@ -121,6 +120,7 @@ class CommonImage {
   // file uniqness checksum
   id = '';
   error;
+  errorDescription;
   attachmentOrder = 0;
 
   /**
@@ -217,7 +217,7 @@ export default {
       /**
        * Must cancel the dragover event in order for the drop event to work.
        */
-      dragOverStream.pipe(map(evt => {
+      dragOverStream.pipe(map(event => {
           return event;
       })).subscribe(evt => {
           if (evt) {
@@ -300,9 +300,7 @@ export default {
               this.errorMessage = '';
           },
 
-          (error) => {
-              
-          },
+          () => {},
           () => {
               console.log('completed loading image');
           }
@@ -360,7 +358,6 @@ export default {
 
         // Create our observer
         const fileObservable = Observable.create((observer) => {
-            const imageModels = [];
             scaleFactors = scaleFactors.scaleDown(reductionScaleFactor);
 
             for (let fileIndex = 0; fileIndex < fileList.length; fileIndex++) {
@@ -378,14 +375,14 @@ export default {
                      *
                      *  */
                     this.readPDF(file, pdfScaleFactor, (images , pdfFile) => {
-                        images.map((image, index) => {
+                        images.map((image) => {
                             image.name = pdfFile.name;
                             this.resizeImage(image, self, scaleFactors, observer, pageNumber , true); // index starts from zero
                             pageNumber = pageNumber + 1  ;
                         });
                     }, (error) => {
                         console.log('error' + JSON.stringify(error));
-                        const imageReadError =  new CommonImageProcessingError(CommonImageError.CannotOpenPDF, error);
+                        const imageReadError =  new CommonImageProcessingError(CommonImageError.CannotOpenPDF);
                         self.filterError(imageReadError);
                     });
                 } else {
@@ -434,9 +431,9 @@ export default {
         // Scale the image by loading into a canvas
 
         console.log('Start scaling down the image using blueimp-load-image lib: ');
-        const scaledImage = loadImage(
+        loadImage(
             image.src, // NOTE: we pass the File ref here again even though its already read because we need the XIFF metadata
-            function (canvas, metadata) {
+            function (canvas) {
 
                 // Canvas may be an Event when errors happens
                 if (canvas instanceof Event) {
@@ -453,7 +450,6 @@ export default {
 
                         const fileName = imageModel.name;
                         const nBytes = imageModel.size;
-                        let fileSize = '';
                         let fileSizeUnit = '';
                         let sOutput = nBytes + ' bytes';
                         // optional code for multiples approximation
@@ -461,7 +457,6 @@ export default {
                                 nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
 
                             sOutput = nApprox.toFixed(3) + ' ' + aMultiples[nMultiple] + ' (' + nBytes + ' bytes)';
-                            fileSize = nApprox.toFixed(0);
                             fileSizeUnit = aMultiples[nMultiple];
                             imageModel.sizeUnit = fileSizeUnit;
                         }
@@ -519,7 +514,7 @@ export default {
         return function (errors) {
             return errors.pipe(scan(
                 // return errors.pipe(
-                (acc, error, index) => {
+                (acc, error) => {
                     /**
                      * If the error is about file too big and we have not reach max retry
                      * yet, theyt keep going to scaling down.
@@ -590,8 +585,7 @@ export default {
         const imgElsArray = [];
         const ctx = canvas.getContext('2d');
 
-        reader.onload = function (progressEvt) {
-
+        reader.onload = function () {
             const docInitParams = {data: reader.result};
             // TODO - The 'as any' was added when porting to common library from MSP
             const loadingTask = PDFJS.getDocument((docInitParams));
@@ -683,8 +677,9 @@ export default {
             console.log(`Max number of image file you can upload is ${50}.
       This file ${imageModel.name} was not uploaded.`);
         } else {
-            this.images.push(imageModel);
-            this.$emit('input', this.images);
+            const images = this.images;
+            images.push(imageModel);
+            this.$emit('input', images);
         }
     },
 
@@ -723,6 +718,7 @@ export default {
         }
         // just add the error to imageModel
         imageModel.error = error;
+        imageModel.errorDescription = errorDescription;
 
         console.log("error with image: ", imageModel);
         this.errorMessage = this.getErrorMessage(imageModel.error);
@@ -762,53 +758,16 @@ export default {
 
     deleteImage: function(imageModel) {
         this.resetInputFields();
-        const index = this.images.findIndex(x => x.uuid === imageModel.uuid);
-        this.images.splice(index, 1);
+        const images = this.images;
+        const index = images.findIndex(x => x.uuid === imageModel.uuid);
+        images.splice(index, 1);
 
         // If there are no images yet, we have to reset the input so it triggers 'required'.
         if ( this.required && this.images.length <= 0 ) {
             console.log('No images, resetting input');
         }
-        this.$emit('input', this.images);
+        this.$emit('input', images);
     },
-
-    /**
-     * Log image attributes
-     * @param imageModel
-     */
-    logImageInfo: function(title, applicationId, imageModel, additionalInfo) {
-
-        // TODO!
-        // // create log entry
-        // const log: LogEntry = new LogEntry();
-        // log.applicationId = applicationId;
-        // const now = moment();
-        // log.mspTimestamp = now.toISOString();
-        // log.applicationPhase = title + ':  imageModelId: ' + imageModel.id
-        //     + '  imageModelUuid: ' + imageModel.uuid
-        //     + '  imageModelSize: ' + imageModel.size
-        //     + '  imageModelWidth: ' + imageModel.naturalWidth
-        //     + '  imageModelHeight: ' + imageModel.naturalHeight
-        //     + '  imageModelContentType: ' + imageModel.contentType
-        //     + (additionalInfo ? '  ' + additionalInfo : '');
-
-        // // send it while subscribing to response
-        // this.logService.logIt(log, title).subscribe(
-        //     (response) => {
-        //         // console.log('log rest service response: ');
-        //         // console.log(response);
-        //     },
-        //     (error) => {
-        //         console.log('HTTP error response from logging service: ');
-        //         console.log(error);
-        //     },
-        //     () => {
-        //         // console.log('log rest service completed!');
-        //     }
-        // );
-    },
-
-
 
     /**
      * Return true if the image size is within range
