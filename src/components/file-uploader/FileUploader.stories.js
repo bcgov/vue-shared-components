@@ -12,5 +12,3 @@ const Template = (args, { argTypes }) => ({
 });
 
 export const Example = Template.bind({});
-Example.args = {
-};

@@ -6,7 +6,7 @@
       <img :src="cloudUploadIconSvg" class="svg-icon d-inline-block mb-3 ml-3" />
 
       <input type="file" :id="id"
-              ref="browseFileRef" ngModel accept="image/*,application/pdf" style="display:none;"
+              ref="browseFileRef" accept="image/*,application/pdf" style="display:none;"
               tabindex="0" multiple :name='id'
               :required='required'
               autocomplete="off"/>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import './FileUploader.css';
 import Thumbnail from './Thumbnail.vue';
 import { Observable, fromEvent, merge } from 'rxjs';
 import {map, filter, flatMap, scan, delay, retryWhen} from 'rxjs/operators';
@@ -50,10 +51,10 @@ import plusIconSvg from './images/plus.svg';
 import cloudUploadIconSvg from './images/cloud-upload-alt.svg';
 import { v4 as uuidv4 } from "uuid";
 
-var loadImage = require('blueimp-load-image');
-var sha1 = require('sha1');
+const loadImage = require('blueimp-load-image');
+const sha1 = require('sha1');
 const PDFJS = require('pdfjs-dist/build/pdf');
-var pdfJsWorker = require('pdfjs-dist/build/pdf.worker.entry');
+const pdfJsWorker = require('pdfjs-dist/build/pdf.worker.entry');
 PDFJS.workerSrc = pdfJsWorker;
 
 
@@ -182,7 +183,6 @@ export default {
       cloudUploadIconSvg: cloudUploadIconSvg
     }
   },
-  // errorDocument: EventEmitter<CommonImage> = new EventEmitter<CommonImage>();
 
   /*
    System processing steps
@@ -791,96 +791,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.dropzone {
-  border: 2px dashed lightgrey;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  padding: 2em 4em;
-}
-
-.preview-zone {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: left;
-  align-items: left;
-}
-.preview-zone .preview-item {
-  position: relative;
-  height: 120px;
-  text-align: left;
-  margin-left: 1rem;
-  margin-bottom: 1.5rem;
-}
-.preview-zone .preview-item .icon-upload {
-  opacity: 0.3;
-  margin: 0 auto 15px auto;
-}
-.preview-zone .preview-item .icon-upload:hover {
-  cursor: pointer;
-  opacity: 0.6;
-}
-.preview-zone .preview-item .text-upload:hover {
-  cursor: pointer;
-}
-
-.thumbnail-container, .common-thumbnail .thumbnail-container {
-  transition: 0.3s;
-  transform: translateY(0);
-}
-.thumbnail-container .image-thumbnail, .thumbnail-container .image-thumbnail-width-priority, .common-thumbnail .thumbnail-container .image-thumbnail, .common-thumbnail .thumbnail-container .image-thumbnail-width-priority {
-  padding: 2px 2px 0 2px;
-  border-radius: 5px;
-}
-.thumbnail-container .image-thumbnail:hover, .thumbnail-container .image-thumbnail-width-priority:hover, .common-thumbnail .thumbnail-container .image-thumbnail:hover, .common-thumbnail .thumbnail-container .image-thumbnail-width-priority:hover {
-  cursor: -webkit-zoom-in;
-  cursor: zoom-in;
-}
-.thumbnail-container .demo-thumbnail, .common-thumbnail .thumbnail-container .demo-thumbnail {
-  height: 100px !important;
-  width: 100px;
-  background-color: #CCC;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.thumbnail-container .demo-thumbnail:hover, .common-thumbnail .thumbnail-container .demo-thumbnail:hover {
-  cursor: pointer !important;
-}
-.thumbnail-container .image-thumbnail, .common-thumbnail .thumbnail-container .image-thumbnail {
-  max-height: 100px;
-  height: auto;
-  max-width: 100%;
-}
-.thumbnail-container .image-thumbnail-width-priority, .common-thumbnail .thumbnail-container .image-thumbnail-width-priority {
-  max-width: 270px;
-  width: auto;
-  max-height: 100%;
-}
-.thumbnail-container:hover, .common-thumbnail .thumbnail-container:hover {
-  box-shadow: 0px 15px 10px -10px rgba(0, 0, 0, 0.1);
-  transform: translateY(-5px);
-}
-.thumbnail-container:hover .action-strip, .common-thumbnail .thumbnail-container:hover .action-strip {
-  border: solid #CCC thin;
-}
-.thumbnail-container .action-strip, .common-thumbnail .thumbnail-container .action-strip {
-  height: 2em;
-  border-radius: 0px 0px 5px 5px;
-  text-align: right;
-  margin: 0 2px 0 2px;
-  color: red;
-  padding: 0.3em;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.thumbnail-container .action-strip a, .common-thumbnail .thumbnail-container .action-strip a {
-  text-decoration: none;
-}
-
-.svg-icon {
-    width: 60px;
-    height: 60px;
-}
-</style>

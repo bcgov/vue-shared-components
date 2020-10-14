@@ -17,20 +17,20 @@ Don't use as file uploader for non-images or non-PDF.
 
 ## API
 
-Note: Requires the following NPM packages:
+Note: Requires the following packages:
 ```bash
-npm i blueimp-load-image --save
-npm i pdfjs-dist --save
-npm i rxjs --save
-npm i sha1 --save
-npm i uuid --save
+blueimp-load-image
+pdfjs-dist
+rxjs
+sha1
+uuid
 ```
 
-| Prop        | Type          | Required | Description                                                         | Default |
-| ----------- | ------------- | -------- | ------------------------------------------------------------------- | ------- |
-| v-model     | Array         | true     | Stores the collection of images selected by the user.               |         |
-| instructionText | String    | false    | Subtitle text to display in the component.           .              | Please upload your documents. |
-| id          | String        | false    | Attribute to uniquely identify the component                        | Empty string. |
+| Prop            | Type          | Required | Description                                                         | Default                       |
+| --------------- | ------------- | -------- | ------------------------------------------------------------------- | ----------------------------- |
+| v-model         | Array         | true     | Stores the collection of images selected by the user.               |                               |
+| instructionText | String        | false    | Subtitle text to display in the component.                          | Please upload your documents. |
+| id              | String        | false    | Attribute to uniquely identify the component.                       | Empty string.                 |
 
 <br />
 

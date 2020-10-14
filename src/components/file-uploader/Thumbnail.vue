@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import './Thumbnail.css';
 
 export default {
   props: {
@@ -52,16 +53,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.image-thumbnail {
-  max-height: 100px;
-  height: auto;
-  max-width: 100%;
-}
-.image-thumbnail-width-priority {
-  max-width: 270px;
-  width: auto;
-  max-height: 100%;
-}
-</style>
