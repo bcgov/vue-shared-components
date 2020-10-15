@@ -37,11 +37,7 @@ export default {
   },
   computed: {
     thumbnailClass() {
-      if (this.scaledWidth <= 300) {
-        return 'image-thumbnail';
-      } else {
-        return 'image-thumbnail-width-priority';
-      }
+      return 'image-thumbnail';
     }
   },
   methods: {
