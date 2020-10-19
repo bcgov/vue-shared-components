@@ -1,9 +1,8 @@
 import FileUploader from "./FileUploader.vue";
 import { mount } from "@vue/test-utils";
 import { render, fireEvent } from "@testing-library/vue";
-import {jest} from '@jest/globals';
-
-
+import { jest } from '@jest/globals';
+const fs = require('fs');
 
 describe("FileUploader component", () => {
   test("matches the success snapshot", () => {
@@ -39,19 +38,23 @@ describe("FileUploader component", () => {
         id: 'test'
       }
     });
-    //const image = new Image(1,1);
-    //const blob = dataURItoBlob('data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==');
-    const blob = null;
+    const blob = new Blob(fs.readFileSync('src/components/file-uploader/test-files/sample-id.jpg'));
+    const file = new File([blob], 'sample-id.jpg');
     const changeEventInit = {
       target: {
-        files: [new File([blob], 'test.jpg')]
+        files: [file]
       }
     };
-    // const observableFromFilesSpy = jest.spyOn(FileUploader.methods, 'observableFromFiles');
-    // const checkImageExistsSpy = jest.spyOn(FileUploader.methods, 'checkImageExists');
-    
     fireEvent.change(container.querySelector("#test"), changeEventInit);
-    // expect(observableFromFilesSpy).toHaveBeenCalled();
-    // expect(checkImageExistsSpy).toHaveBeenCalled();
+  });
+
+  test("Click `add` button.", () => {
+    const { container } = render(FileUploader, {
+      propsData: {
+        value: [],
+        id: 'test'
+      }
+    });
+    fireEvent.click(container.querySelector("a.common-thumbnail"));
   });
 });

@@ -42,8 +42,6 @@ export default {
   },
   methods: {
     deleteImage(evt) {
-      console.log('ThumbnailComponent:Delete from thumbnail: %o', evt);
-      console.log('ThumbnailComponent:imageObject:', JSON.stringify(this.imageObject, null, 2));
       this.$emit('delete', this.imageObject);
     }
   }

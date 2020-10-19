@@ -22,7 +22,7 @@
         <Thumbnail :imageObject="imageModel" @delete="deleteImage(imageModel)" />
       </div>
 
-        <a href="javascrip: void 0;" class="common-thumbnail ml-3" @click='openFileDialog($event)'>
+        <a href="javascript: void(0);" class="common-thumbnail ml-3" @click='openFileDialog($event)'>
           <div class="thumbnail-container">
             <div class="image-thumbnail demo-thumbnail">
               <img :src="plusIconSvg" class="svg-icon" />
@@ -330,7 +330,6 @@ export default {
     /** Opens the file upload dialog from the browser. */
     openFileDialog: function(event) {
         event.preventDefault();
-        console.log('opening file dialog');
         this.$refs.browseFileRef.dispatchEvent(new MouseEvent('click'));
     },
 
@@ -362,7 +361,7 @@ export default {
 
             for (let fileIndex = 0; fileIndex < fileList.length; fileIndex++) {
                 const file = fileList[fileIndex];
-                console.log('Start processing file ' + fileIndex + ' of ' + fileList.length + ' %s of size %s bytes %s type', file.name, file.size, file.type);
+                // console.log('Start processing file ' + fileIndex + ' of ' + fileList.length + ' %s of size %s bytes %s type', file.name, file.size, file.type);
 
                 const pdfScaleFactor = 2.0;
 
@@ -544,8 +543,6 @@ export default {
         const reader = new FileReader();
 
         reader.onload = function (progressEvt) {
-
-            console.log('loading image into an img tag: %o', progressEvt);
             // Load into an image element
             const imgEl = document.createElement('img');
             imgEl.src = (reader.result);
@@ -574,7 +571,7 @@ export default {
         reader.readAsDataURL(imageFile);
     },
 
-  readPDF: function(pdfFile, pdfScaleFactor, callback, error) {
+    readPDF: function(pdfFile, pdfScaleFactor, callback, error) {
 
         PDFJS.disableWorker = true;
         PDFJS.disableStream = true;
