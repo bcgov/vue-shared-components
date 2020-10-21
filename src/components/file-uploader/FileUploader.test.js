@@ -11,20 +11,6 @@ const fs = require('fs');
 const sha1 = require('sha1');
 import sampleImage from './test-files/sample-id.jpg';
 
-function mockDropData(files) {
-  return {
-    dataTransfer: {
-      files,
-      items: files.map((file) => ({
-        kind: "file",
-        type: file.type,
-        getAsFile: () => file,
-      })),
-      types: ["Files"],
-    },
-  };
-}
-
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
   const byteCharacters = atob(b64Data);
   const byteArrays = [];
@@ -43,6 +29,16 @@ const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
 
   const blob = new Blob(byteArrays, {type: contentType});
   return blob;
+}
+
+function getFilterError(error) {
+  return {
+    errorCode: error,
+    image: new CommonImage('content'),
+    rawImageFile: {
+      name: 'name.jpg'
+    }
+  };
 }
 
 describe("CommonImageProcessingError", () => {
@@ -88,10 +84,6 @@ describe("FileUploader component", () => {
     });
     const blob = new Blob(fs.readFileSync('src/components/file-uploader/test-files/sample-id.jpg'));
     const file = new File([blob], 'sample-id.jpg');
-    console.log("file is File", sampleImage);
-    // const file = new File([JSON.stringify({ ping: true })], "ping.json", {
-    //   type: "application/json",
-    // });
     const changeEventInit = {
       target: {
         files: [file]
@@ -151,8 +143,6 @@ describe("FileUploader component", () => {
       onload();
     });
     const wrapper = mount(FileUploader, {});
-    const fileContent = "file content";
-    // const image = new CommonImage(fileContent)
     const image = document.createElement("img");
     image.src = sampleImage;
     const observer = {
@@ -211,39 +201,25 @@ describe("FileUploader component", () => {
 
   test("filterError() TooBig", () => {
     const wrapper = mount(FileUploader, {});
-    const error = {
-      errorCode: CommonImageError.TooBig,
-      image: new CommonImage("content")
-    };
+    const error = getFilterError(CommonImageError.TooBig);
     wrapper.vm.filterError(error);
   });
 
   test("filterError() CannotOpen", () => {
     const wrapper = mount(FileUploader, {});
-    const error = {
-      errorCode: CommonImageError.CannotOpen,
-      rawImageFile: {
-        name: 'name.jpg'
-      }
-    };
+    const error = getFilterError(CommonImageError.CannotOpen);
     wrapper.vm.filterError(error);
   });
 
   test("filterError() CannotOpenPDF", () => {
     const wrapper = mount(FileUploader, {});
-    const error = {
-      errorCode: CommonImageError.CannotOpenPDF,
-      image: new CommonImage("content")
-    };
+    const error = getFilterError(CommonImageError.CannotOpenPDF);
     wrapper.vm.filterError(error);
   });
 
   test("filterError() other error", () => {
     const wrapper = mount(FileUploader, {});
-    const error = {
-      errorCode: CommonImageError.AlreadyExists,
-      image: new CommonImage("content")
-    };
+    const error = getFilterError(CommonImageError.AlreadyExists);
     expect(() => {
       wrapper.vm.filterError(error);
     }).toThrow();

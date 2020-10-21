@@ -1,15 +1,17 @@
 import Thumbnail from "./Thumbnail.vue";
-import { mount } from "@vue/test-utils";
 import { render, fireEvent } from "@testing-library/vue";
-import { jest } from '@jest/globals';
+
+function getImage(width, height) {
+  return {
+    naturalWidth: width,
+    naturalHeight: height
+  };
+}
 
 describe("Thumbnail component", () => {
   
   test("matches the success snapshot", () => {
-    const image = {
-      naturalWidth: 100,
-      naturalHeight: 100
-    };
+    const image = getImage(100, 100);
     const wrapper = render(Thumbnail, {
       props: {
         imageObject: image
@@ -19,10 +21,7 @@ describe("Thumbnail component", () => {
   });
 
   test("large scalled width", () => {
-    const image = {
-      naturalWidth: 1000,
-      naturalHeight: 100
-    };
+    const image = getImage(1000, 100);
     const wrapper = render(Thumbnail, {
       props: {
         imageObject: image,
@@ -32,11 +31,8 @@ describe("Thumbnail component", () => {
   });
 
   test("small scalled width", () => {
-    const image = {
-      naturalWidth: 100,
-      naturalHeight: 1000
-    };
-    const { container } = render(Thumbnail, {
+    const image = getImage(100, 1000);
+    const wrapper = render(Thumbnail, {
       props: {
         imageObject: image,
       }
@@ -44,11 +40,8 @@ describe("Thumbnail component", () => {
   });
 
   test("NaN scalled width", () => {
-    const image = {
-      naturalWidth: undefined,
-      naturalHeight: 1000
-    };
-    const { container } = render(Thumbnail, {
+    const image = getImage(undefined, 1000);
+    const wrapper = render(Thumbnail, {
       props: {
         imageObject: image,
       }
@@ -56,10 +49,7 @@ describe("Thumbnail component", () => {
   });
   
   test("delete event", () => {
-    const image = {
-      naturalWidth: 100,
-      naturalHeight: 100
-    };
+    const image = getImage(100, 100);
     const { container } = render(Thumbnail, {
       props: {
         imageObject: image,
@@ -67,5 +57,4 @@ describe("Thumbnail component", () => {
     });
     fireEvent.click(container.querySelector(".action-strip a"));
   });
-
 });
