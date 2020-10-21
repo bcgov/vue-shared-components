@@ -58,7 +58,7 @@ const pdfJsWorker = require('pdfjs-dist/build/pdf.worker.entry');
 PDFJS.workerSrc = pdfJsWorker;
 
 
-var CommonImageError;
+export var CommonImageError;
 (function (CommonImageError) {
     CommonImageError[CommonImageError["WrongType"] = 0] = "WrongType";
     CommonImageError[CommonImageError["TooSmall"] = 1] = "TooSmall";
@@ -71,7 +71,7 @@ var CommonImageError;
 })(CommonImageError || (CommonImageError = {}));
 
 
-class CommonImageProcessingError {
+export class CommonImageProcessingError {
   commonImage;
   rawImageFile;
   maxSizeAllowed;
@@ -85,7 +85,7 @@ class CommonImageProcessingError {
 /**
  * Image as uploaded by user
  */
-class CommonImage {
+export class CommonImage {
   uuid;
 
   /**
@@ -137,7 +137,7 @@ class CommonImage {
   }
 }
 
-class CommonImageScaleFactorsImpl {
+export class CommonImageScaleFactorsImpl {
   widthFactor;
   heightFactor;
 
@@ -319,7 +319,6 @@ export default {
             const sha1Sum = sha1(file.fileContent);
             for (let i = imageList.length - 1; i >= 0; i--) {
                 if (imageList[i].id === sha1Sum) {
-                    console.log(`This file ${file.name} has already been uploaded.`);
                     return true;
                 }
             }
@@ -409,7 +408,7 @@ export default {
     resizeImage: function( image, self, scaleFactors, observer, pageNumber = 0 , isPdf = false) {
         const imageModel = new CommonImage();
         const reader = new FileReader();
-        console.log('image.name:' + image.id); // .name deprecated, changed image.name to image.id
+        
         // Copy file properties
         imageModel.name = image.id ;
         if (isPdf) {
@@ -543,9 +542,9 @@ export default {
         const reader = new FileReader();
 
         reader.onload = function (progressEvt) {
+            console.log("Read Image: ", imageFile);
             // Load into an image element
             const imgEl = document.createElement('img');
-            imgEl.src = (reader.result);
 
             // Wait for onload so all properties are populated
             imgEl.onload = (args) => {
@@ -566,6 +565,10 @@ export default {
 
                     return invalidImageHandler(imageReadError);
                 };
+            imgEl.src = (reader.result);
+        };
+        reader.onerror = function(event) {
+            console.log("Error reading image file: ", event);
         };
 
         reader.readAsDataURL(imageFile);
@@ -668,11 +671,9 @@ export default {
 
 
     handleImageFile: function(imageModel) {
-        console.log('image size (bytes) after compression: ' + imageModel.size);
+        // Max images is 50.
         if (this.images.length >= 50) {
-            // log to console
-            console.log(`Max number of image file you can upload is ${50}.
-      This file ${imageModel.name} was not uploaded.`);
+            return;
         } else {
             const images = this.images;
             images.push(imageModel);
@@ -682,7 +683,6 @@ export default {
 
     filterError: function(error) {
         this.resetInputFields();
-        console.log('Error in loading image: %o', error);
 
         /**
          * Handle the error if the image is gigantic that after
@@ -709,17 +709,14 @@ export default {
     },
 
     handleError: function(error, imageModel, errorDescription) {
-
         if (!imageModel) {
             imageModel = new CommonImage();
         }
-        // just add the error to imageModel
+        // Add the error to imageModel
         imageModel.error = error;
         imageModel.errorDescription = errorDescription;
 
-        console.log("error with image: ", imageModel);
         this.errorMessage = this.getErrorMessage(imageModel.error);
-        // this.errorDocument.emit(imageModel);
     },
 
     getErrorMessage: function(error) {
@@ -755,14 +752,11 @@ export default {
 
     deleteImage: function(imageModel) {
         this.resetInputFields();
+
         const images = this.images;
         const index = images.findIndex(x => x.uuid === imageModel.uuid);
         images.splice(index, 1);
 
-        // If there are no images yet, we have to reset the input so it triggers 'required'.
-        if ( this.required && this.images.length <= 0 ) {
-            console.log('No images, resetting input');
-        }
         this.$emit('input', images);
     },
 
@@ -774,14 +768,6 @@ export default {
         if (file.naturalHeight < 0 ||
             file.naturalWidth < 0 ) {
             return false;
-        }
-        return true;
-    },
-
-    isValid: function() {
-        console.log('isValid', this.images);
-        if (this.required) {
-            return this.images && this.images.length > 0;
         }
         return true;
     }
