@@ -78,20 +78,7 @@ describe("FileUploader component", () => {
     });
     fireEvent.dragOver(container.querySelector(".dropzone"));
   });
-
-  test("drop event", async () => {
-    const { container } = render(FileUploader, {
-      propsData: {
-        value: [],
-      }
-    });
-    const file = new File([JSON.stringify({ test: true })], "test.json", {
-      type: "application/json"
-    });
-    const data = mockDropData([file]);
-    fireEvent.drop(container.querySelector(".dropzone"), data);
-  });
-
+  
   test("change event", (done) => {
     const { container } = render(FileUploader, {
       propsData: {
@@ -305,6 +292,4 @@ describe("FileUploader component", () => {
       naturalHeight: -10
     })).toBeFalsy();
   });
-
-  
 });
