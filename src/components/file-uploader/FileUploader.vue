@@ -541,7 +541,7 @@ export default {
     readImage: function(imageFile, nextPageNumber, callback, invalidImageHandler) {
         const reader = new FileReader();
 
-        reader.onload = function (progressEvt) {
+        reader.onload = function () {
             console.log("Read Image: ", imageFile);
             // Load into an image element
             const imgEl = document.createElement('img');

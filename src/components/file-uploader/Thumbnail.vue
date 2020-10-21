@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    deleteImage(evt) {
+    deleteImage() {
       this.$emit('delete', this.imageObject);
     }
   }

@@ -9,7 +9,6 @@ function getImage(width, height) {
 }
 
 describe("Thumbnail component", () => {
-  
   test("matches the success snapshot", () => {
     const image = getImage(100, 100);
     const wrapper = render(Thumbnail, {
@@ -32,7 +31,7 @@ describe("Thumbnail component", () => {
 
   test("small scalled width", () => {
     const image = getImage(100, 1000);
-    const wrapper = render(Thumbnail, {
+    render(Thumbnail, {
       props: {
         imageObject: image,
       }
@@ -41,7 +40,7 @@ describe("Thumbnail component", () => {
 
   test("NaN scalled width", () => {
     const image = getImage(undefined, 1000);
-    const wrapper = render(Thumbnail, {
+    render(Thumbnail, {
       props: {
         imageObject: image,
       }
