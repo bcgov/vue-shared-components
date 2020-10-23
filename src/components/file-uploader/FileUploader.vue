@@ -588,10 +588,12 @@ export default {
         reader.onload = function () {
             const docInitParams = {data: reader.result};
             // TODO - The 'as any' was added when porting to common library from MSP
-            const loadingTask = PDFJS.getDocument((docInitParams));
+            const loadingTask = PDFJS.getDocument(docInitParams);
             loadingTask.promise.then((pdfdoc) => {
                 const numPages = pdfdoc.numPages;
-                if (currentPage <= pdfdoc.numPages) { getPage(); }
+                if (currentPage <= pdfdoc.numPages) {
+                    getPage();
+                }
 
                 function getPage() {
                     pdfdoc.getPage(currentPage).then(function (page) {
@@ -631,7 +633,6 @@ export default {
                         });
                     }, function (errorReason) {
                         error(errorReason);
-
                     });
                 }
             }, function (errorReason) {
@@ -754,7 +755,9 @@ export default {
         this.resetInputFields();
 
         const images = this.images;
-        const index = images.findIndex(x => x.uuid === imageModel.uuid);
+        const index = images.findIndex(x => {
+            return x.uuid === imageModel.uuid;
+        });
         images.splice(index, 1);
 
         this.$emit('input', images);

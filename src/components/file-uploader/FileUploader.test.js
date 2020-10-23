@@ -6,10 +6,43 @@ import FileUploader, {
 } from "./FileUploader.vue";
 import { mount } from "@vue/test-utils";
 import { render, fireEvent } from "@testing-library/vue";
-import { jest } from '@jest/globals';
+import { jest, beforeEach } from '@jest/globals';
 const fs = require('fs');
 const sha1 = require('sha1');
 import sampleImage from './test-files/sample-id.jpg';
+
+
+let mockViewport;
+let mockRenderPromise;
+let mockGetPage;
+jest.mock('pdfjs-dist/build/pdf', () => {
+  return {
+    getDocument: () => {
+      return {
+        promise: {
+          then: (resolve) => {
+            const pdfDoc = {
+              numPages: 2,
+              getPage: mockGetPage
+            };
+            resolve(pdfDoc);
+          }
+        }
+      };
+    }
+  };
+});
+
+const mockDocument = document;
+jest.mock('blueimp-load-image', () => {
+  return (fileSrc, callback) => {
+    const canvas = mockDocument.createElement('canvas');
+    canvas.width = 10;
+    canvas.height = 10;
+    callback(canvas);
+  }
+});
+require('pdfjs-dist/build/pdf');
 
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
   const byteCharacters = atob(b64Data);
@@ -61,6 +94,35 @@ describe("CommonImage", () => {
 });
 
 describe("FileUploader component", () => {
+  beforeEach(() => {
+    mockViewport = {
+      width: 10,
+      height: 10
+    }
+    mockRenderPromise = {
+      promise: {
+        then: (renderCallback) => {
+          renderCallback();
+        }
+      }
+    };
+    mockGetPage = () => {
+      const page = {
+        getViewport: () => {
+          return mockViewport;
+        },
+        render: () => {
+          return mockRenderPromise;
+        }
+      };
+      return {
+        then: (resolve) => {
+          resolve(page);
+        }
+      };
+    };
+  });
+
   test("matches the success snapshot", () => {
     const wrapper = mount(FileUploader, {});
     expect(wrapper.html()).toMatchSnapshot();
@@ -168,22 +230,57 @@ describe("FileUploader component", () => {
     callback(error);
   });
 
-  test("readPDF()", (done) => {
+  describe("CommonImageProcessingError", () => {
     const wrapper = mount(FileUploader, {});
     const pdfContents = fs.readFileSync('src/components/file-uploader/test-files/sample.pdf', {encoding: 'base64'});
     const blob = b64toBlob(pdfContents, 'application/pdf');
     const pdfFile = new File([blob], 'sample.pdf');
-    wrapper.vm.readPDF(
-      pdfFile,
-      new CommonImageScaleFactorsImpl(1,1),
-      () => {
-        done();
-      },
-      () => {
-        done();
+    
+    test("readPDF()", (done) => {
+      wrapper.vm.readPDF(
+        pdfFile,
+        new CommonImageScaleFactorsImpl(1,1),
+        () => {
+          done();
+        }
+      );
+    });
+  
+    test("readPDF() with viewBox", (done) => {
+      mockViewport = {
+        width: null,
+        height: null,
+        viewBox: [null, null, 10, 10]
       }
-    );
+      wrapper.vm.readPDF(
+        pdfFile,
+        new CommonImageScaleFactorsImpl(1,1),
+        () => {
+          done();
+        }
+      );
+      
+    });
+
+    test("readPDF() throw page render error", (done) => {
+      mockGetPage = () => {
+        return {
+          then: (resolve, reject) => {
+            reject();
+          }
+        };
+      };
+      wrapper.vm.readPDF(
+        pdfFile,
+        new CommonImageScaleFactorsImpl(1,1),
+        null,
+        () => {
+          done();
+        }
+      );
+    });
   });
+  
 
   test("makeGrayScale()", () => {
     const wrapper = mount(FileUploader, {});
@@ -193,28 +290,36 @@ describe("FileUploader component", () => {
     wrapper.vm.makeGrayScale(canvas);
   });
 
+  test("makeGrayScale() null context", () => {
+    const wrapper = mount(FileUploader, {});
+    const canvas = {
+      getContext: () => {
+        return null;
+      }
+    };
+    wrapper.vm.makeGrayScale(canvas);
+  });
+
   test("handleImageFile()", () => {
     const wrapper = mount(FileUploader, {});
-    const image = new CommonImage("content");
+    let image = new CommonImage("content");
     wrapper.vm.handleImageFile(image);
+    for(let i=0; i<50; i++) {
+      image = new CommonImage("content");
+      wrapper.vm.handleImageFile(image);
+    }
   });
 
-  test("filterError() TooBig", () => {
+  test("filterError()", () => {
     const wrapper = mount(FileUploader, {});
-    const error = getFilterError(CommonImageError.TooBig);
-    wrapper.vm.filterError(error);
-  });
-
-  test("filterError() CannotOpen", () => {
-    const wrapper = mount(FileUploader, {});
-    const error = getFilterError(CommonImageError.CannotOpen);
-    wrapper.vm.filterError(error);
-  });
-
-  test("filterError() CannotOpenPDF", () => {
-    const wrapper = mount(FileUploader, {});
-    const error = getFilterError(CommonImageError.CannotOpenPDF);
-    wrapper.vm.filterError(error);
+    wrapper.vm.filterError(getFilterError(CommonImageError.TooBig));
+    wrapper.vm.filterError({
+      errorCode: CommonImageError.CannotOpen,
+      rawImageFile: {
+        name: 'name.jpg'
+      }
+    });
+    wrapper.vm.filterError(getFilterError(CommonImageError.CannotOpenPDF));
   });
 
   test("filterError() other error", () => {

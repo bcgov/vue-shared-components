@@ -10,20 +10,18 @@ function getImage(width, height) {
 
 describe("Thumbnail component", () => {
   test("matches the success snapshot", () => {
-    const image = getImage(100, 100);
     const wrapper = render(Thumbnail, {
       props: {
-        imageObject: image
+        imageObject: getImage(100, 100)
       }
     });
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   test("large scalled width", () => {
-    const image = getImage(1000, 100);
     const wrapper = render(Thumbnail, {
       props: {
-        imageObject: image,
+        imageObject: getImage(1000, 100),
       }
     });
     expect(wrapper.html()).toMatchSnapshot();
