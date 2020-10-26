@@ -9,15 +9,18 @@ import { render, fireEvent } from "@testing-library/vue";
 import { jest, beforeEach } from '@jest/globals';
 const fs = require('fs');
 const sha1 = require('sha1');
-import sampleImage from './test-files/sample-id.jpg';
+import sampleImage from './test-files/sample.jpg';
 
 
 let mockViewport;
 let mockRenderPromise;
 let mockGetPage;
+let PDFJS = require('pdfjs-dist/build/pdf');
+
 jest.mock('pdfjs-dist/build/pdf', () => {
+  const { jest } = require('@jest/globals');
   return {
-    getDocument: () => {
+    getDocument: jest.fn(() => {
       return {
         promise: {
           then: (resolve) => {
@@ -29,7 +32,7 @@ jest.mock('pdfjs-dist/build/pdf', () => {
           }
         }
       };
-    }
+    })
   };
 });
 
@@ -42,7 +45,6 @@ jest.mock('blueimp-load-image', () => {
     callback(canvas);
   }
 });
-require('pdfjs-dist/build/pdf');
 
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
   const byteCharacters = atob(b64Data);
@@ -136,6 +138,19 @@ describe("FileUploader component", () => {
     });
     fireEvent.dragOver(container.querySelector(".dropzone"));
   });
+
+  test("drop event", () => {
+    const { container } = render(FileUploader, {
+      propsData: {
+        value: [],
+      }
+    });
+    fireEvent.drop(container.querySelector(".dropzone"), {
+      dataTransfer: {
+        files: []
+      }
+    });
+  });
   
   test("change event", (done) => {
     const { container } = render(FileUploader, {
@@ -144,8 +159,9 @@ describe("FileUploader component", () => {
         id: 'test'
       }
     });
-    const blob = new Blob(fs.readFileSync('src/components/file-uploader/test-files/sample-id.jpg'));
-    const file = new File([blob], 'sample-id.jpg');
+    const imageContents = fs.readFileSync('src/components/file-uploader/test-files/sample.jpg', {encoding: 'base64'});
+    const blob = b64toBlob(imageContents, 'image/jpg');
+    const file = new File([blob], 'sample.pdf');
     const changeEventInit = {
       target: {
         files: [file]
@@ -185,8 +201,10 @@ describe("FileUploader component", () => {
 
   test("checkImageExists(): false", () => {
     const wrapper = mount(FileUploader, {});
-    const image = new CommonImage("file content")
-    const imageExists = wrapper.vm.checkImageExists(image, []);
+    const image = new CommonImage("file content");
+    let imageExists = wrapper.vm.checkImageExists(image, []);
+    expect(imageExists).toBeFalsy();
+    imageExists = wrapper.vm.checkImageExists(image, [new CommonImage("file content")]);
     expect(imageExists).toBeFalsy();
   });
 
@@ -230,11 +248,36 @@ describe("FileUploader component", () => {
     callback(error);
   });
 
-  describe("CommonImageProcessingError", () => {
-    const wrapper = mount(FileUploader, {});
-    const pdfContents = fs.readFileSync('src/components/file-uploader/test-files/sample.pdf', {encoding: 'base64'});
-    const blob = b64toBlob(pdfContents, 'application/pdf');
-    const pdfFile = new File([blob], 'sample.pdf');
+  describe("readImage()", () => {
+    let wrapper;
+    let imageContents;
+    let blob;
+    let imageFile;
+
+    beforeEach(() => {
+      wrapper = mount(FileUploader, {});
+      imageContents = fs.readFileSync('src/components/file-uploader/test-files/sample.jpg', {encoding: 'base64'});
+      blob = b64toBlob(imageContents, 'image/jpg');
+      imageFile = new File([blob], 'sample.jpg');
+    });
+
+    test("readImage() success", () => {
+      wrapper.vm.readImage(imageFile, 0, () => {}, () => {});
+    });
+  });
+
+  describe("readPDF()", () => {
+    let wrapper;
+    let pdfContents;
+    let blob;
+    let pdfFile;
+
+    beforeEach(() => {
+      wrapper = mount(FileUploader, {});
+      pdfContents = fs.readFileSync('src/components/file-uploader/test-files/sample.pdf', {encoding: 'base64'});
+      blob = b64toBlob(pdfContents, 'application/pdf');
+      pdfFile = new File([blob], 'sample.pdf');
+    });
     
     test("readPDF()", (done) => {
       wrapper.vm.readPDF(
@@ -270,6 +313,26 @@ describe("FileUploader component", () => {
           }
         };
       };
+      wrapper.vm.readPDF(
+        pdfFile,
+        new CommonImageScaleFactorsImpl(1,1),
+        null,
+        () => {
+          done();
+        }
+      );
+    });
+
+    test("readPDF() throw error on getDocument", (done) => {
+      PDFJS.getDocument = jest.fn(() => {
+        return {
+          promise: {
+            then: function(resolve, reject) {
+              reject();
+            }
+          }
+        }
+      });
       wrapper.vm.readPDF(
         pdfFile,
         new CommonImageScaleFactorsImpl(1,1),
@@ -351,7 +414,7 @@ describe("FileUploader component", () => {
   test("deleteImage()", () => {
     const wrapper = mount(FileUploader, {});
     const image = new CommonImage("content");
-    wrapper.vm.$emit('input', [image]);
+    wrapper.vm.images = [image];
     wrapper.vm.deleteImage(image);
     expect(wrapper.vm.images.length).toBe(0);
   });

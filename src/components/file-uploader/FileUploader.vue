@@ -552,23 +552,16 @@ export default {
                 return callback(imgEl, imageFile, nextPageNumber);
             };
 
-            imgEl.onerror =
-                (args) => {
+            imgEl.onerror = (args) => {
+                // log it to the console
+                console.log('This image cannot be opened/read, it is probably an invalid image. %o', args);
 
-                    // log it to the console
-                    console.log('This image cannot be opened/read, it is probably an invalid image. %o', args);
+                const imageReadError = new CommonImageProcessingError(CommonImageError.CannotOpen);
+                imageReadError.rawImageFile = imageFile;
 
-                    // throw new Error('This image cannot be opened/read');
-                    const imageReadError = new CommonImageProcessingError(CommonImageError.CannotOpen);
-
-                    imageReadError.rawImageFile = imageFile;
-
-                    return invalidImageHandler(imageReadError);
-                };
-            imgEl.src = (reader.result);
-        };
-        reader.onerror = function(event) {
-            console.log("Error reading image file: ", event);
+                return invalidImageHandler(imageReadError);
+            };
+            imgEl.src = reader.result;
         };
 
         reader.readAsDataURL(imageFile);
