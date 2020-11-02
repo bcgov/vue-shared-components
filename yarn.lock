@@ -2105,7 +2105,7 @@
     resolve-from "^5.0.0"
     store2 "^2.7.1"
 
-"@storybook/vue@^6.0.27":
+"@storybook/vue@^6.0.28":
   version "6.0.28"
   resolved "https://registry.yarnpkg.com/@storybook/vue/-/vue-6.0.28.tgz#2c4df6fbf54b60f9f4819db3df5cd611d2b53c19"
   integrity sha512-4wMX8Okt8Y1/ynjHJEbldO38QCHbi+89LWyloBbEShZWPbAB0tKm0c6EhGH0c1uIrnfGMxZA/fLiMuoYAPbiEQ==
