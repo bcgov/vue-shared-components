@@ -17,11 +17,16 @@
   },
   "dependencies": {
     "@bcgov/bootstrap-theme": "github:bcgov/bootstrap-theme",
+    "blueimp-load-image": "^5.14.0",
     "bootstrap": "^4.5.3",
     "core-js": "^3.8.1",
     "history": "^5.0.0",
     "jquery": "^3.5.1",
     "mdi-vue": "^1.8.1",
+    "pdfjs-dist": "^2.5.207",
+    "rxjs": "^6.6.3",
+    "sha1": "^1.1.1",
+    "uuid": "^8.3.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {
@@ -44,6 +49,7 @@
     "eslint": "^7.15.0",
     "jest": "^26.6.3",
     "eslint-plugin-vue": "^7.1.0",
+    "jest-canvas-mock": "^2.3.0",
     "jest-serializer-vue": "^2.0.2",
     "jest-sonar-reporter": "^2.0.0",
     "react-is": "^16.13.1",
@@ -51,6 +57,9 @@
     "vue-template-compiler": "^2.6.11"
   },
   "jest": {
+    "setupFiles": [
+      "jest-canvas-mock"
+    ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules/(?!mdi-vue)"
     ],
