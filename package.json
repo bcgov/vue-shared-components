@@ -35,7 +35,7 @@
     "@storybook/storybook-deployer": "^2.8.6",
     "@testing-library/vue": "^5.6.1",
     "@vue/cli-plugin-babel": "~4.5.9",
-    "@vue/cli-plugin-eslint": "~4.5.6",
+    "@vue/cli-plugin-eslint": "~4.5.14",
     "@vue/cli-service": "~4.5.8",
     "@vue/test-utils": "^1.1.0",
     "babel-eslint": "^10.1.0",
